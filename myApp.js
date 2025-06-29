@@ -8,6 +8,14 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, '❌ MongoDB connection error:'));
+db.once('open', () => {
+  console.log('✅ MongoDB connected successfully!');
+});
+
+
 // Define a schema
 const personSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -22,9 +30,9 @@ const Person = mongoose.model("Person", personSchema);
 // Create a person and save it to the database
 const createAndSavePerson = (done) => {
   const person = new Person({
-    name: "Iann",
-    age: 20,
-    favoriteFoods: ["Rice", "Chicken"],
+    name: "John",
+    age: 25,
+    favoriteFoods: ["Pizza", "Burger"]
   });
 
   person.save((err, data) => {
